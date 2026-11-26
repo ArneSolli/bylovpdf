@@ -18,9 +18,23 @@ TMP = os.path.join(SCR, "pdf_test")
 UT = sys.argv[1]
 MARG = {"top": "18mm", "bottom": "20mm", "left": "18mm", "right": "18mm"}
 FORORD = os.path.join(SKRIPT, "Forord.md")
-# Baksida: linjene blir sette opp som på forsida (1. linje som tittelen, 2. som undertittelen,
-# resten som linja under logoen), med same skrift og fargar.
-BAKSIDE = ["Bylovsjubileet 1276–2026", "Universitetet i Bergen", "2026"]
+# Baksida: teksten står i skript/Bakside.md (éi linje per tekstlinje, kommentarar <!-- --> blir
+# hoppa over). Linjene blir sette opp som på forsida: 1. linje som tittelen, 2. som undertittelen,
+# resten som linja under logoen, med same skrift og fargar.
+BAKSIDE_FIL = os.path.join(SKRIPT, "Bakside.md")
+BAKSIDE_STANDARD = ["Bylovsjubileet 1276–2026", "Universitetet i Bergen", "2026"]
+
+
+def les_bakside():
+    if not os.path.exists(BAKSIDE_FIL):
+        return BAKSIDE_STANDARD
+    import re
+    tekst = re.sub(r"<!--.*?-->", "", open(BAKSIDE_FIL, encoding="utf-8").read(), flags=re.S)
+    linjer = [l.strip() for l in tekst.splitlines() if l.strip()]
+    return linjer or BAKSIDE_STANDARD
+
+
+BAKSIDE = les_bakside()
 
 JSN = os.path.join(TMP, "_render.json")
 # Datoen sidene vart henta = då pdf_render.py sist skreiv _render.json

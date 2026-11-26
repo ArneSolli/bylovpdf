@@ -13,7 +13,7 @@ PDF-en blir bygd opp slik:
 | 3 | Forord (`skript/Forord.md`) |
 | 4 | Innhaldsliste, klikkbar |
 | 5 ff. | Alle sidene i utstillinga i menyrekkjefølgje, utan menyar, søkjefelt og botnfelt |
-| Siste | Bakside. Talet på sider er alltid partal, med ei blank side framfor baksida ved behov. |
+| Siste | Bakside (`skript/Bakside.md`). Talet på sider er alltid partal, med ei blank side framfor baksida ved behov. |
 
 Andre eigenskapar:
 - PDF-en har sidetal og bokmerke.
@@ -29,9 +29,10 @@ Andre eigenskapar:
 | `ordna/bylovsjubileet_artiklar_ordna.csv` | Rekkjefølgje og nivå for alle sidene. Fila blir halden ved like for hand. Rader utan URL er mellomtitlar. |
 | `bylovsjubileet_artiklar.csv` | Den opphavlege sidelista (frå første crawling 2026-11-25) |
 | `skript/pdf_render.py` | Opnar kvar side i Microsoft Edge og skriv ut hovudinnhaldet som PDF |
-| `skript/pdf_set_saman.py` | Set saman forside, forord, innhaldsliste, sidene og bakside, og legg til sidetal og bokmerke. Teksten på baksida står i `BAKSIDE` øvst i skriptet. |
+| `skript/pdf_set_saman.py` | Set saman forside, forord, innhaldsliste, sidene og bakside, og legg til sidetal og bokmerke |
 | `skript/pdf_krymp.py` | Skalerer ned bileta til maks 150 ppi |
 | `skript/Forord.md` | Forordet. Rediger det før ny generering. |
+| `skript/Bakside.md` | Teksten på baksida, med éi linje per tekstlinje. Rediger han før ny generering. |
 | `skript/bylov_ordne.py` | Laga første utgåve av ordna-fila. Det skriv ikkje over henne utan `--overskriv`. |
 | `CLAUDE.md` | Detaljerte arbeidsnotat: krav, kjende fallgruver og korleis nettstaden er bygd |
 
@@ -68,7 +69,7 @@ Køyr frå rotmappa i repoet:
    python skript/pdf_krymp.py mellomdata/pdf_test/heile_fullopploysing.pdf pdf/bylovsjubileet_heile_utstillinga.pdf
    ```
 
-Har du berre endra forordet, er det nok å køyre steg 3 og 4.
+Har du berre endra forordet eller baksida, er det nok å køyre steg 3 og 4.
 
 ## Det som ikkje er med
 

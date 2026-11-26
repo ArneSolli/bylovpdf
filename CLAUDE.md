@@ -50,7 +50,7 @@ Krava er avtalte med brukaren:
 - **Side 5:** heile framsida er første tekstside. Kvar post byrjar på ny side.
 - Blir forordet lengre enn éi side, flyttar innhaldslista og teksten seg bakover tilsvarande.
 - **Siste side:** baksida med «Bylovsjubileet 1276–2026», «Universitetet i Bergen» og «2026». Ho har same skrift og fargar som forsida, henta frå `forside_stilar` i `_render.json`.
-  - Teksten står i `BAKSIDE` øvst i `pdf_set_saman.py`.
+  - Teksten står i `skript/Bakside.md`, som brukaren og prosjektleiaren redigerer. Kvar linje blir éi tekstlinje, og tomme linjer og kommentarar (`<!-- -->`) blir hoppa over. Manglar fila, brukar skriptet standardteksten i `BAKSIDE_STANDARD`.
   - Talet på sider skal vere partal, slik at baksida ligg på baksida av eit ark. Ved behov blir det sett inn ei blank side framfor henne.
   - Baksida og den blanke sida har ikkje sidetal.
 - **Kva som er teke bort:** venstremenyen, toppramma, botnfeltet med kreditering og navigasjonen for førre og neste side.
@@ -91,12 +91,12 @@ Det som trengst:
 |---|---|
 | `ordna/` | Rekkjefølgje og nivå, halden ved like for hand |
 | `pdf/` | Ferdig PDF |
-| `skript/` | `hent_artikkelliste.py`, `bylov_ordne.py`, `pdf_render.py`, `pdf_set_saman.py`, `pdf_krymp.py` og `Forord.md` |
+| `skript/` | `hent_artikkelliste.py`, `bylov_ordne.py`, `pdf_render.py`, `pdf_set_saman.py`, `pdf_krymp.py`, `Forord.md` og `Bakside.md` |
 | `mellomdata/` | Resultatet av crawlinga (`artikkelliste_crawl.csv`), kopien av ordna-fila og `pdf_test/`, som er mellomfiler frå PDF-køyringa og blir laga på nytt |
 
 ## Git og GitHub
 Prosjektmappa er eit git-repo med greina `main`. Commitane står på Arne Solli `<arne.solli@uib.no>`. Namn og e-post er sette berre for dette repoet.
-- **Med i repoet:** `README.md`, `LICENSE`, `CLAUDE.md`, `bylovsjubileet_artiklar.csv`, `ordna/` og `skript/` med `Forord.md`.
+- **Med i repoet:** `README.md`, `LICENSE`, `CLAUDE.md`, `bylovsjubileet_artiklar.csv`, `ordna/` og `skript/` med `Forord.md` og `Bakside.md`.
 - **Lisens:** Skripta har MIT-lisens. Lisensen gjeld ikkje tekstane og bileta i utstillinga.
 - **GitHub:** Repoet ligg offentleg på https://github.com/ArneSolli/bylovpdf, og `main` følgjer `origin/main`. Innlogginga er lagra i Git Credential Manager. Alle dei offentlege repoa i `uib-ub` er òg opne, men 24 av 35 manglar lisens (2026-11-26).
 - **Utelate:** `.gitignore` er ei kviteliste og held ute `pdf/` og `mellomdata/`. Dei har opphavsrettsleg innhald frå utstillinga og filer som kan lagast på nytt.
