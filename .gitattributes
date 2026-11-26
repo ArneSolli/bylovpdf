@@ -1,0 +1,5 @@
+# CSV-filene skal lagrast nøyaktig som dei er (UTF-8 med BOM, CRLF), utan linjeskift-konvertering.
+*.csv -text diff
+# Tekst elles: normaliser linjeskift
+*.py  text
+*.md  text

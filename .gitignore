@@ -1,0 +1,15 @@
+# Kviteliste: alt er utelate som standard, berre det som er lista under kjem med i repoet.
+# Utelate med vilje: pdf/ og mellomdata/ (opphavsrettsleg innhald frå utstillinga og filer som
+# kan lagast på nytt).
+/*
+!/.gitignore
+!/.gitattributes
+!/CLAUDE.md
+!/bylovsjubileet_artiklar.csv
+!/ordna/
+!/skript/
+
+# Aldri med
+__pycache__/
+*.pyc
+*.log
