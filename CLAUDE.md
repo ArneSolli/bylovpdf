@@ -49,11 +49,15 @@ Krava er avtalte med brukaren:
 - **Side 4:** innhaldslista på **éi** side. Overskrifter utan URL er utheva og har ikkje sidetal.
 - **Side 5:** heile framsida er første tekstside. Kvar post byrjar på ny side.
 - Blir forordet lengre enn éi side, flyttar innhaldslista og teksten seg bakover tilsvarande.
+- **Siste side:** baksida med «Bylovsjubileet 1276–2026», «Universitetet i Bergen» og «2026». Ho har same skrift og fargar som forsida, henta frå `forside_stilar` i `_render.json`.
+  - Teksten står i `BAKSIDE` øvst i `pdf_set_saman.py`.
+  - Talet på sider skal vere partal, slik at baksida ligg på baksida av eit ark. Ved behov blir det sett inn ei blank side framfor henne.
+  - Baksida og den blanke sida har ikkje sidetal.
 - **Kva som er teke bort:** venstremenyen, toppramma, botnfeltet med kreditering og navigasjonen for førre og neste side.
 - **Figurar:** maks 66 % av A4-høgda (196 mm). Forsida er unnateken.
 - **Bilete:** maks 150 ppi ut frå storleiken dei har på sida, lagra som JPEG med kvalitet 80.
 - **Video:** YouTube-ramer blir erstatta med førehandsbiletet og ei klikkbar lenke.
-- **Navigasjon:** sidetal frå første tekstside, bokmerke (Forside, Forord, Innhald og alle postar) og klikkbar innhaldsliste.
+- **Navigasjon:** sidetal frå første tekstside, bokmerke (Forside, Forord, Innhald, alle postar og Bakside) og klikkbar innhaldsliste.
 - **Kjeldemerknad:** Merknaden under innhaldslista har datoen sidene vart henta. Datoen blir teken frå når `pdf_render.py` sist køyrde.
 
 ## Forord (`skript/Forord.md`)

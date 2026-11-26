@@ -18,6 +18,9 @@ TMP = os.path.join(SCR, "pdf_test")
 UT = sys.argv[1]
 MARG = {"top": "18mm", "bottom": "20mm", "left": "18mm", "right": "18mm"}
 FORORD = os.path.join(SKRIPT, "Forord.md")
+# Baksida: linjene blir sette opp som på forsida (1. linje som tittelen, 2. som undertittelen,
+# resten som linja under logoen), med same skrift og fargar.
+BAKSIDE = ["Bylovsjubileet 1276–2026", "Universitetet i Bergen", "2026"]
 
 JSN = os.path.join(TMP, "_render.json")
 # Datoen sidene vart henta = då pdf_render.py sist skreiv _render.json
@@ -65,7 +68,7 @@ FORF = {int(r["rekkjefølgje"]): r["forfatter"] for r in csv.DictReader(open(CSV
 
 CSS = """
 html, body { background: #fff !important; }
-body > *:not(#toc):not(#forord) { display: none !important; }
+body > *:not(#toc):not(#forord):not(#bakside) { display: none !important; }
 #forord { padding: 0; margin: 0; color: #222; line-height: 1.6; }
 #forord h1 { font-size: 2.2em; font-weight: 600; margin: 0 0 1em 0; color: var(--h1farge); font-family: var(--h1font); }
 #forord h2 { font-size: 1.3em; font-weight: 600; margin: 1.4em 0 .5em 0; }
@@ -129,8 +132,30 @@ def lag_forord(pg, fil):
     return pymupdf.open(fil).page_count
 
 
+def lag_bakside(pg, fil):
+    """Baksida: linjene i BAKSIDE med stilane frå toppfeltet på framsida, som på forsida."""
+    st = forside.get("forside_stilar") or ["", "", ""]
+    linjer = []
+    for i, tekst in enumerate(BAKSIDE):
+        if i == 0:
+            linjer.append(f'<div style="{st[0]}font-size:30pt;line-height:1.15">{html.escape(tekst)}</div>')
+        elif i == 1:
+            linjer.append(f'<div style="{st[1]}font-size:19pt;line-height:1.3;margin-top:4mm">{html.escape(tekst)}</div>')
+        else:
+            linjer.append(f'<div style="{st[2]}font-size:14pt;margin-top:4mm">{html.escape(tekst)}</div>')
+    side = ('<div id="bakside" style="width:210mm;height:296mm;box-sizing:border-box;padding:20mm 18mm;'
+            'display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center">'
+            + "".join(linjer) + "</div>")
+    pg.add_style_tag(content="html, body { margin: 0 !important; padding: 0 !important; }")
+    pg.evaluate("h => { ['toc', 'forord', 'bakside'].forEach(i => document.getElementById(i)?.remove());"
+                " document.body.insertAdjacentHTML('afterbegin', h); }", side)
+    pg.pdf(path=fil, format="A4", print_background=True, margin={k: "0mm" for k in MARG})
+    assert pymupdf.open(fil).page_count == 1, "baksida vart meir enn éi side"
+
+
 toc_fil = os.path.join(TMP, "innhald.pdf")
 forord_fil = os.path.join(TMP, "forord.pdf")
+bakside_fil = os.path.join(TMP, "bakside.pdf")
 with sync_playwright() as p:
     b = p.chromium.launch(channel="msedge")
     pg = b.new_page(color_scheme="light", viewport={"width": 823, "height": 1000})
@@ -154,6 +179,8 @@ with sync_playwright() as p:
     else:
         raise SystemExit("innhaldslista får ikkje plass på éi side")
     print("innhaldsliste: skala", toc_skala, "| tett" if tett else "")
+    # Baksida (siste side) – teiknast sist, sidan ho nullstiller margane på sida.
+    lag_bakside(pg, bakside_fil)
     b.close()
 toc_sider = pymupdf.open(toc_fil).page_count
 SIDER = startsider(toc_sider)
@@ -183,6 +210,14 @@ for i in range(forste_tekstside - 1, ut.page_count):
     s.insert_text(((s.rect.width - w) / 2, s.rect.height - 10 * 72 / 25.4), t,
                   fontname="tiro", fontsize=9, color=(0.35, 0.35, 0.35))
 
+# Baksida skal vere siste side og liggje på baksida av eit ark: totalt partal sider,
+# med ei blank side framfor baksida ved behov. (Ingen sidetal på desse.)
+blank_for_bakside = (ut.page_count + 1) % 2 == 1
+if blank_for_bakside:
+    ut.new_page(width=rect.width, height=rect.height)
+ut.insert_pdf(pymupdf.open(bakside_fil))
+bakside_nr = ut.page_count
+
 # Klikkbare postar i innhaldslista
 for r in innhald:
     if not SIDER.get(r["nr"]):
@@ -203,12 +238,14 @@ for r in innhald:
     niv = min(max(1, r["nivå"]), forrige + 1)
     bm.append([niv, r["tittel"], SIDER[r["nr"]]])
     forrige = niv
+bm.append([1, "Bakside", bakside_nr])
 ut.set_toc(bm)
 ut.set_metadata({"title": forside["tittel"], "subject": f"Utskrift av {forside['url']}, henta {HENTA}",
                  "creator": "Playwright/Edge + PyMuPDF"})
 os.makedirs(os.path.dirname(UT), exist_ok=True)
 ut.save(UT, garbage=3, deflate=True)
 print("lagra:", UT, "| sider:", ut.page_count, "| forord:", forord_sider, "side(r) | innhaldsliste:", toc_sider,
-      "side(r) | første tekstside:", forste_tekstside, "| henta:", HENTA)
+      "side(r) | første tekstside:", forste_tekstside, "| bakside: s.", bakside_nr,
+      "(med blank side framfor)" if blank_for_bakside else "", "| henta:", HENTA)
 for r in innhald:
     print(f"  s. {SIDER[r['nr']]!s:>3}  nivå {r['nivå']}  {r['tittel']}  ({r['sider']} s.)")
