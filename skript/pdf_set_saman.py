@@ -23,6 +23,12 @@ JSN = os.path.join(TMP, "_render.json")
 # Datoen sidene vart henta = då pdf_render.py sist skreiv _render.json
 HENTA = datetime.date.fromtimestamp(os.path.getmtime(JSN)).isoformat()
 R = json.load(open(JSN, encoding="utf-8"))
+# _render.json lagrar absolutte stiar. Finn filene ut frå filnamnet i pdf_test/, så det
+# framleis verkar om prosjektmappa er flytta.
+for r in R:
+    for k in ("fil", "forside_fil"):
+        if r.get(k):
+            r[k] = os.path.join(TMP, os.path.basename(r[k]))
 # Forsida (s. 1) er berre hovudbiletet frå framsida; sjølve framsida er første tekstside.
 forside = [r for r in R if r["nivå"] == 0]
 assert len(forside) == 1 and forside[0].get("forside_fil"), "manglar framsida / forsidebiletet"
