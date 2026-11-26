@@ -92,10 +92,12 @@ Det som trengst:
 
 ## Git og GitHub
 Prosjektmappa er eit git-repo med greina `main`. Commitane står på Arne Solli `<arne.solli@uib.no>`. Namn og e-post er sette berre for dette repoet.
-- **Med i repoet:** `CLAUDE.md`, `bylovsjubileet_artiklar.csv`, `ordna/` og `skript/` med `Forord.md`.
+- **Med i repoet:** `README.md`, `LICENSE`, `CLAUDE.md`, `bylovsjubileet_artiklar.csv`, `ordna/` og `skript/` med `Forord.md`.
+- **Lisens:** Skripta har MIT-lisens. Lisensen gjeld ikkje tekstane og bileta i utstillinga.
+- **GitHub:** Repoet ligg offentleg på https://github.com/ArneSolli/bylovpdf, og `main` følgjer `origin/main`. Innlogginga er lagra i Git Credential Manager. Alle dei offentlege repoa i `uib-ub` er òg opne, men 24 av 35 manglar lisens (2026-11-26).
 - **Utelate:** `.gitignore` er ei kviteliste og held ute `pdf/` og `mellomdata/`. Dei har opphavsrettsleg innhald frå utstillinga og filer som kan lagast på nytt.
 - **Sjekka 2026-11-26:** Skripta inneheld ingen absolutte stiar, brukarnamn, e-postadresser eller nøklar. CSV-filene inneheld namna på forfattarane slik dei står på den offentlege nettstaden.
-- **Plan:** Repoet skal først lastast opp til ein privat repo på den personlege GitHub-kontoen til brukaren. Seinare skal det overførast til organisasjonen til Universitetsbiblioteket, [uib-ub](https://github.com/uib-ub), med *Settings → Transfer ownership*.
+- **Plan:** Repoet skal seinare overførast til organisasjonen til Universitetsbiblioteket, [uib-ub](https://github.com/uib-ub), med *Settings → Transfer ownership*.
 - **Kjeldekoden til utstillinga** ligg i `uib-ub/exhibition-bylov750-nextra`. Han kan gje menystrukturen direkte, om crawlinga ein gong ikkje er nok.
 
 Prosjektet låg tidlegare i `prosjekt\sikt\bylovsjubileet` og vart flytta ut 2026-11-26. `sikt` er eit privat prosjekt og har ingenting med dette repoet å gjere.
